@@ -1,0 +1,19 @@
+mybatis:
+  mapper-locations: classpath:/mapper/*.xml
+  configuration:
+    #配置后控制台可打印sql执行的情况
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    #lazyLoadingEnabled、aggressiveLazyLoading必须一起配置 开启延时，取消加载全部才有效果
+    #开启延时
+    lazy-loading-enabled: true
+    #取消加载全部
+    aggressive-lazy-loading: false
+    local-cache-scope: session
+
+spring:
+  datasource:
+    username: root
+    password: 123456
+    #必须配置字符编码，否则带中文的查不出来
+    url: jdbc:mysql://192.168.43.119:3306/mybatis?characterEncoding=utf-8
+    driver-class-name: com.mysql.cj.jdbc.Driver

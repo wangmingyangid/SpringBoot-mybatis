@@ -1,0 +1,36 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.wmy.mybatis.dao.IKeyMapper">
+    <select id="getKeyById" resultMap="myKey">
+        select k.id kid,k.name kname,l.id lockid,l.name lname
+        from `key` k
+        left join `lock` l on k.lid=l.id
+        where k.id=#{id}
+    </select>
+    
+    <select id="getKeyByIdForSimple" resultMap="myKey2">
+        select * from `key` where id=#{id}
+    </select>
+    
+    <resultMap id="myKey2" type="org.wmy.mybatis.bean.Key">
+        <id property="id" column="id"></id>
+        <result property="keyName" column="name"></result>
+
+        <association
+                property="lock"
+                select="org.wmy.mybatis.dao.ILockMapper.getLockById"
+                column="lid" javaType="org.wmy.mybatis.bean.Lock">
+        </association>
+    </resultMap>
+
+    <resultMap id="myKey" type="org.wmy.mybatis.bean.Key">
+        <id property="id" column="kid"></id>
+        <result property="keyName" column="kname"></result>
+
+        <association property="lock" javaType="org.wmy.mybatis.bean.Lock">
+            <id property="id" column="lockid"></id>
+            <result property="lockName" column="lname"></result>
+        </association>
+    </resultMap>
+</mapper>

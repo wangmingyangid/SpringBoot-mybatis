@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.wmy.mybatis.dao.IEmployeeMapper">
+
+    <select id="getEmpById" resultMap="my">
+        SELECT * FROM employee WHERE id=#{id}
+    </select>
+
+    <update id="updateEmployee">
+        UPDATE employee
+        SET name=#{empName},email=#{email},gender=#{gender},account=#{loginAccount}
+        WHERE id=#{id}
+    </update>
+
+    <delete id="deleteEmployee">
+        DELETE FROM employee WHERE id=#{id}
+    </delete>
+
+    <insert id="insertEmployee" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO employee(`name`,email,gender,account)
+        VALUES(#{empName},#{email},#{gender},#{loginAccount})
+    </insert>
+
+    <select id="getEmpByIdAndEmpName" resultMap="my">
+        SELECT * FROM employee where id=#{id} AND `name`=#{name}
+    </select>
+
+    <select id="getEmpByMap" resultMap="my">
+        select * from ${table} where id=#{id} and name=#{name}
+    </select>
+
+    <select id="getEmpList" resultMap="my">
+        select * from employee
+    </select>
+
+    <select id="getEmpByIdReturnMap" resultType="map">
+        select * from employee where id=#{id}
+    </select>
+
+    <select id="getEmployeesReturnMap" resultMap="my">
+        select * from employee
+    </select>
+
+    <resultMap id="my" type="org.wmy.mybatis.bean.Employee">
+        <id property="id" column="id"></id>
+        <result property="gender" column="gender"></result>
+        <result property="email" column="email"></result>
+        <result property="empName" column="name"></result>
+        <result property="loginAccount" column="account"></result>
+    </resultMap>
+</mapper>

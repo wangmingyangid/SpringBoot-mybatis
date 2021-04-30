@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.wmy.mybatis.dao.ITeacherMapper">
+
+    <!--    &&的转义字符是&amp;&amp;
+  			""的转义字符是&quot;&quot;
+  			-->
+    <select id="getTeacherByCondition" resultType="org.wmy.mybatis.bean.Teacher">
+        select * from teacher
+        <trim prefix="where" suffixOverrides="and">
+            <if test="id!=null">
+                id=#{id} and
+            </if>
+
+            <if test="name!=null &amp;&amp; name!= &quot;&quot;">
+                name like #{name}
+            </if>
+        </trim>
+    </select>
+
+    <select id="getTeacherByIn" resultType="org.wmy.mybatis.bean.Teacher">
+        select * from teacher where id in
+        <foreach collection="ids" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="getTeacherByConditionChoose" resultType="org.wmy.mybatis.bean.Teacher">
+        select * from teacher
+        <where>
+            <choose>
+                <when test="id!=null">
+                    id=#{id}
+                </when>
+                <when test="name!=null &amp;&amp; name!= &quot;&quot;">
+                    name=#{name}
+                </when>
+                <otherwise>
+                    1=1
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <update id="updateInSelective">
+        update teacher
+        <set>
+            <if test="name!=null &amp;&amp; name!= &quot;&quot;">
+                name=#{name},
+            </if>
+            <if test="gender!=null &amp;&amp; name!= &quot;&quot;">
+                gender=#{gender},
+            </if>
+            <if test="age!=null &amp;&amp; name!= &quot;&quot;">
+                age=#{age}
+            </if>
+        </set>
+        <where>
+            id=#{id}
+        </where>
+    </update>
+
+    <insert id="insertBatch">
+        insert into teacher(name,age) values
+        <foreach collection="teachers" separator="," item="item">
+            (#{item.name},#{item.age})
+        </foreach>
+    </insert>
+
+</mapper>
